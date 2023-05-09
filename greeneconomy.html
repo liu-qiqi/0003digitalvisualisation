@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    	<script src="https://d3js.org/d3.v4.js"></script>
+        <!-- Color Scale -->
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+	<title>0510</title>
+	<meta charset="UTF-8">
+	<style>
+        body {
+	       background-color: #F6EADC;
+	   }
+        #pagediv {
+        margin: auto;
+        width: 95%;
+        }
+        
+        #headerdiv {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding: 5px 30px 5px 30px;
+        }
+        #contentdiv {
+        background-color: #F9F2EA;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        padding: 28px 28px 28px 28px;
+        }
+		#container {
+			display: flex;
+		}
+        
+		#left {
+			flex: 1;
+			padding: 100px;
+		}
+		#chart1 {
+			flex: 1;
+			width: 100%;
+		}
+		#chart2 {
+			flex: 1;
+			width: 100%;
+		}
+        
+		#right {
+			flex: 1;
+			padding: 100px;
+		}
+        
+        #img-container {
+            position: relative;
+            text-align: center;
+            top: 60%;
+            left: 50%;
+            transform: translate(-100%, -25%);
+            width: 10%;
+        }
+        
+        #image-container img {
+          position: absolute;
+          bottom: 0;
+        }
+        img {
+            max-width: 750%;
+            max-height: 750%;
+        }
+        h1 {
+        color: #747166;
+        text-align: right;
+        font-family: helvetica;
+        font-weight: 200;}
+        p {
+        text-align: justify;
+        font-family: helvetica;
+        font-size: 15px;
+        line-height: 2.0;
+        font-weight: 80;}
+        h2 {
+        color: grey;
+        text-align: center;
+        font-size: 16px;
+        font-family: helvetica;
+        padding: 45px 30px 5px 30px;
+        font-weight: 80;}
+	</style>
+    
+</head>
+<body>
+    
+     <!--welcome-->
+    <div id="pagediv">
+        <div id="right">
+            <div id="container">
+                <h1 style="font-size: 30px;">Pedaling Towards Sustainability</h1>
+            </div>
+            <div id="container">
+                <h2 style="text-align: right; padding: 10px 10px 0 110px; font-size: 14px; color:#747166;">A Decade of Progress in Air Quality, Bike-sharing, 
+                    <br>Green Spaces, and Green Economy in NYC</h2>
+                </div>
+            <div id="container">
+                <h2 style="text-align: right; padding: 10px 10px 0 140px; font-size: 14px; color:darkgrey;">
+                    Digital Visualisation for CASA0003 Group 02</h2>
+            </div>
+            
+            <div id="img-container">
+                <img src="https://raw.githubusercontent.com/liu-qiqi/0003digitalvisualisation/main/img/cover.webp" 
+                             alt="cover" id="img">
+            </div>
+            
+        </div>
+    </div>
+    
+    
+    <!--p1-->
+    <div id="pagediv">
+        <div id="left">
+            <div id="headerdiv">
+		      <h1>Introduction</h1>
+	       </div>
+            
+            <div id="contentdiv">
+                <p>The project aims to show the urban regeneration in environment sustainability of New York City, through interactive visualisations that display the bike sharing system, public transportation as well as green economy, green space and air quality. In recent years, policies have been implemented at all levels of government to help realise the potential of using public transport , such as cycling (Pucher & Buehler 2012) to improve the overall sustainability of our transport system and the liveability of our cities.
+                </p>
+                <br>
+                
+                <p>For example, the OneNYC2050 plan encourages more people to walk, bike and use public transportation while ensuring the vehicles remaining on roads run clear (#OneNYC). The bike-share programme can provide opportunities for economic growth and job creation and offer considerable health benefits. A New York City bike-share program could be developed either as a city-built programme (with operations contracted out under a city services contract) or as a franchise (NYC Dept. City Planning 2009). 
+                </p>
+                <br>
+                
+                <p>Furthermore, the ecosystem services provided by urban green spaces not only support the ecological integrity of the city, but also protect the public health of the urban population (Wolch et al. 2014).
+                </p>
+                
+            </div>
+        </div>
+    </div>
+    
+<!--p2 charts-->
+    <div id="pagediv">
+        <div id="container">       
+            <div id="left">
+                <h2>Clean Energy Employment New York (2015 - 2021)</h2>
+                <div id="chart1"></div>
+                <h2>Electric Vehicle Registrations (2011 - 2021)</h2>
+                <div id="chart2"></div>
+            </div>
+
+            <div id="right">
+                <div id="headerdiv">
+                    <h1>Green Economy</h1>
+                    <h2 style="text-align: right;  padding: 5px 0px 5px 50px;">Clean Energy Industry</h2>
+                </div>
+                <div id="contentdiv">
+                    <p>In the last quarter of 2021, clean energy businesses across New York employed more than 165,000 workers. This represents an increase of about 5%, or 7,369 jobs, compared to the end of 2020. Clean energy employment in the State was 17% higher compared to the baseline estimate for 2015. 
+                        
+                        <br><br><br>
+                        
+                        This unprecedented job growth coincides with a boom in electric vehicle registration in New York. Original electric vehicle registrations in the State nearly doubled between 2020 and 2021, jumping from about 21,000 in 2020 to about 41,000 in 2021. Of the nearly 41,000 new electric vehicle registrations in 2021, about 23,000 were battery electric vehicles (BEVs) and 18,000 were plug-in hybrid electric vehicles (PHEVs). 
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+      <!--p3-->
+    <div id="pagediv">
+        <div id="left">
+            <div id="headerdiv">
+		      <h1 style="color: grey;">Data Source</h1>
+	       </div>
+            
+            <div id="contentdiv">
+                <p>Transportation
+                    <br>
+                    https://data.bts.gov/Research-and-Statistics/Transit-Ridership-Fixed-Route-Bus/dwrv-9qyx <br>
+                    https://data.bts.gov/Research-and-Statistics/Transit-Ridership-Urban-Rail/rw9i-mdin <br>
+                    https://s3.amazonaws.com/tripdata/index.html <br> https://www.nyc.gov/html/dot/html/bicyclists/bikestats.shtml 
+                    <br><br>
+                     Environmental
+                     <br>
+                    https://data.cityofnewyork.us/Recreation/Parks-Properties-Map/krz2-j7bn<br>
+                    https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r <br> https://www.health.ny.gov/statistics/environmental/public_health_tracking/environmental/air.htm
+                    <br><br>
+                     Green economy
+                     <br>
+                    https://www.nature.com/articles/s41599-019-0329-3 <br>
+                    https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Publications/Clean-energy-industry/2022-CEI-Gen-Report.pdf <br>
+                    https://www.nyserda.ny.gov/About/Newsroom/2022-Announcements/2022-11-29-Governor-Hochul-Announces-Record-Level-of-Clean-Energy-Jobs-Reached-in-New-York-State 
+
+                </p>
+                
+            </div>
+        </div>
+    </div>
+
+<script>
+        // set the dimensions尺寸 and margins边距 of the graph
+        var margin = {top: 40, right: 60, bottom: 20, left: 100},
+        width = 560 - margin.left - margin.right,
+        height = 250 - margin.top - margin.bottom;
+
+   /* chart1*/
+    // append the svg object to the body of the page
+    var svg1 = d3.select("#chart1")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    //Read the data
+    d3.csv("https://raw.githubusercontent.com/liu-qiqi/0003digitalvisualisation/main/Data/employment.csv",
+      // When reading the csv, I must format variables:
+      function(d){
+        return { Year :d3.timeParse("%Y")(d.Year), value : d.TotalEmployment, growth : d.CumulativeGrowth}
+      },
+      // Now I can use this dataset:
+      function(data1) {
+        // Add X axis
+        var x = d3.scaleTime()
+          .domain(d3.extent(data1, function(d) { return d.Year; }))
+          .range([ 0, width ]);
+        svg1.append("g")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(x));
+        // Add Y axis
+        var y = d3.scaleLinear()
+          .domain( [100000, 180000])
+          .range([ height, 0 ]);
+        svg1.append("g")
+          .call(d3.axisLeft(y));
+        // Add the line
+        svg1.append("path")
+          .datum(data1)
+          .attr("fill", "none")
+          .attr("stroke", "#69b3a2")
+          .attr("stroke-width", 1.5)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.Year) })
+            .y(function(d) { return y(d.value) })
+            )
+        // create a tooltip
+        var Tooltip = d3.select("#chart1")
+          .append("div")
+          .style("opacity", 0)
+          .attr("class", "tooltip")
+          .style("background-color", "white")
+          .style("border", "solid")
+          .style("border-width", "2px")
+          .style("border-radius", "5px")
+          .style("padding", "5px")
+
+        // Three function that change the tooltip when user hover / move / leave a cell
+          var mouseover = function(d) {
+            Tooltip
+              .style("opacity", 1)
+          }
+          var mousemove = function(d) {
+            Tooltip
+              .html("Cumulative % Growth : " + d.growth)
+              .style("left", (d3.mouse(this)[0]+70) + "px")
+              .style("top", (d3.mouse(this)[1]) + "px")
+          }
+          var mouseleave = function(d) {
+            Tooltip
+              .style("opacity", 0)
+          }
+
+
+          // Add the points
+        svg1
+          .append("g")
+          .selectAll("dot")
+          .data(data1)
+          .enter()
+          .append("circle")
+            .attr("class", "myCircle")
+            .attr("cx", function(d) { return x(d.Year) } )
+            .attr("cy", function(d) { return y(d.value) } )
+            .attr("r", 5)
+            .attr("stroke", "#69b3a2")
+            .attr("stroke-width", 3)
+            .attr("fill", "white")
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave)
+    })
+    
+    /*chart2*/
+    // append the svg object to the body of the page
+    var svg2 = d3.select("#chart2")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+    
+    //Read the data
+    d3.csv("https://raw.githubusercontent.com/liu-qiqi/0003digitalvisualisation/main/Data/electricvehicle.csv", function(data2) {
+
+        // List of groups (here I have one group per column)
+        var allGroup = ["BEV", "PHEV"]
+
+        // Reformat the data: we need an array of arrays of {x, y} tuples
+        var dataReady = allGroup.map(function(grpName) { // .map allows to do something for each element of the list
+          return {
+            name: grpName,
+            values: data2.map(function(d) {
+              return {time: d.Year, value: +d[grpName]};
+            })
+          };
+        });
+        // I strongly advise to have a look to dataReady with
+        // console.log(dataReady)
+
+        // A color scale: one color for each group
+        var Color = d3.scaleOrdinal()
+          .domain(allGroup)
+          .range(d3.schemeSet2);
+
+        // Add X axis --> it is a date format
+        var x = d3.scaleTime()
+              .domain(d3.extent(data2, function(d) { return d.Year; }))
+              .range([ 0, width ]);
+            svg2.append("g")
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(x));
+
+        // Add Y axis
+        var y = d3.scaleLinear()
+          .domain( [0,24000])
+          .range([ height, 0 ]);
+        svg2.append("g")
+          .call(d3.axisLeft(y));
+
+        // Add the lines
+        var line = d3.line()
+          .x(function(d) { return x(+d.time) })
+          .y(function(d) { return y(+d.value) })
+        svg2.selectAll("Lines")
+          .data(dataReady)
+          .enter()
+          .append("path")
+            .attr("d", function(d){ return line(d.values) } )
+            .attr("stroke", function(d){ return Color(d.name) })
+            .style("stroke-width", 4)
+            .style("fill", "none")
+
+        // Add the points
+        svg2
+          // First we need to enter in a group
+          .selectAll("Dots")
+          .data(dataReady)
+          .enter()
+            .append('g')
+            .style("fill", function(d){ return Color(d.name) })
+          // Second we need to enter in the 'values' part of this group
+          .selectAll("Points")
+          .data(function(d){ return d.values })
+          .enter()
+          .append("circle")
+            .attr("cx", function(d) { return x(d.time) } )
+            .attr("cy", function(d) { return y(d.value) } )
+            .attr("r", 5)
+            .attr("stroke", "white")
+
+        // Add a legend at the end of each line
+        svg2
+          .selectAll("Labels")
+          .data(dataReady)
+          .enter()
+            .append('g')
+            .append("text")
+              .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; }) // keep only the last value of each time series
+              .attr("transform", function(d) { return "translate(" + x(d.value.time) + "," + y(d.value.value) + ")"; }) // Put the text at the position of the last point
+              .attr("x", 12) // shift the text a bit more right
+              .text(function(d) { return d.name; })
+              .style("fill", function(d){ return Color(d.name) })
+              .style("font-size", 15)
+
+    })
+
+    </script>
+
+    
+
+		
+			 
