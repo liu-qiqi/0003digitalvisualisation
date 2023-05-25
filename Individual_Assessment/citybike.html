@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>City Bike Sharing Real Time Map</title>
+
+        <!--DeckGL-->
+        <script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+        <!--Mapbox-->
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+        <!--D3-->
+        <script charset="utf-8" src="https://d3js.org/d3.v4.min.js"></script>
+        <!--Echarts-->
+        <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+
+        <style>
+            #title {
+                position: absolute;
+                background-color: rgba(255,255,255,0.8);
+                box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);
+                font-family: "Montserrat", sans-serif;  
+                border-radius: 3px;
+                padding: 15px;
+                margin-top: 15px;
+                margin-left: 15px;
+            }
+
+            #title h2 {
+                line-height: 18px;
+                margin: 0;
+            }
+            
+            #container {
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+            }
+
+            #map {
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 100%;
+            }
+
+            #tooltip {
+              position: absolute;
+              visibility: hidden;
+              z-index: 2;
+              right: 0;
+              top: 0;
+              width: 20%;
+              height: auto;
+              min-height: 100px;
+              display: grid;
+              grid-template-columns: auto auto auto;
+              grid-template-rows: auto;
+              grid-template-areas:
+                "icon title title"
+                "item-a item-a ."
+                "item-b item-b ."
+                "item-c item-c item-c";
+
+              background-color: rgb(240, 240, 240);
+              border: 1px solid #888;
+            }
+
+            .title {
+              grid-area: title;
+              font-weight: bold;
+              margin: 4px;
+            }
+
+            .item-a {
+              grid-area: item-a;
+              margin: 4px;
+            }
+
+            .item-b {
+              grid-area: item-b;
+              margin: 4px;
+            }
+
+            #item-c {
+              grid-area: item-c;
+              margin: 4px;
+              height: 300px;
+
+            }
+
+            .icon {
+              grid-area: icon;
+              margin: 4px;
+              max-width: 20%;
+              height: auto;
+              place-self: left;
+            }
+          </style>
+    </head>
+    
+    <body>
+        
+        <div id="container">
+        <div id="tooltip"></div>
+        <div id="map"></div>
+        <div id="title">
+                <img style="display: inline;" src="bike.png" alt="logo" 
+                        width=25px
+                        height=auto/>
+                <h2 style="display: inline;">Bike Sharing Live Map in Milan</h2>
+            <p><img src="legend.png"></p>
+                 <p class="credit">
+                     Data: <a href="https://www.citybik.es/#about">Citybikes - Bike sharing data for everyone</a>.</p>
+
+        </div>
+        
+        </div>
+        
+        <script>
+             // Mapbox Api
+            const API_TOKEN_Mapbox = 'pk.eyJ1Ijoicm9rdW5hbmFuYSIsImEiOiJjajdvdzhkamIwM2F2MzFuMDA4cWJqN2p4In0.vHBQXdIcIMQ6mQ5KcdWrxw';
+            mapboxgl.accessToken = API_TOKEN_Mapbox;
+            
+            // Initial View
+            const INITIAL_VIEW_STATE = {
+                longitude: 9.182,
+                latitude: 45.466,
+                zoom: 13,
+            };
+            
+            // Colors
+            const colorScaleFunction = d3.scaleThreshold()
+            .domain([5, 8, 14, 20, 24, 30]) //number of bikes
+            .range([ //RGB format
+                [255, 36, 96],
+                [255, 165, 96],
+                [255, 210, 133],
+                [200, 210, 133],
+                [148, 210, 133],
+                [60, 179, 113],
+            ]);
+            
+            // set map with DeckGL
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/rokunanana/cleys1gt6000s01pal7g5e699', //mapbox style URL
+                interactive: true,
+                center: [INITIAL_VIEW_STATE.longitude, INITIAL_VIEW_STATE.latitude],
+                zoom: INITIAL_VIEW_STATE.zoom,
+            });
+            
+            map.on('load', () => {
+                
+                const BikeMi = new deck.MapboxLayer({
+                    id: "bike-milano",
+                    data: "https://api.citybik.es/v2/networks/bikemi",
+                    dataTransform: d => d.network.stations,
+                    type: deck.ScatterplotLayer,
+                    pickable: true,
+                    opacity: 0.45,
+                    stroked: true,
+                    filled: true,
+                    radiusScale: 4,
+                    radiusMinPixels: 6,
+                    radiusMaxPixels: 100,
+                    lineWidthMinPixels: 1,
+                    getPosition: (d) => [d.longitude, d.latitude, 5],
+                    getRadius: (d) => d.empty_slots,
+                    getFillColor: (d) => colorScaleFunction(d.free_bikes),
+                    getLineColor: (d) => [0, 0, 30],
+                    onHover: ({ object }, info) => {
+                        (isHovering = Boolean(object));
+                        if (isHovering == true) {
+                            console.log(object.empty_slots);
+                            showTooltip(info, object);
+                            map.getCanvas().style.cursor = 'pointer';
+                        }
+                        else {
+                            hideTooltip(info);
+                            map.getCanvas().style.cursor = 'grab';
+                        }
+                    },
+            
+                })
+                map.addLayer(BikeMi);
+                map.__deck.props.getCursor = () => map.getCanvas().style.cursor; //cursor style
+
+                const timer = setInterval(() => {
+                    BikeMi.setProps({ data: "https://api.citybik.es/v2/networks/bikemi" });
+                    console.log('Data Updated');
+                }, 300000); //API called every 5 min => 300000 ms
+
+            })
+            
+          // Pop up functions:
+          // Pop up functions:
+          function hideTooltip() {
+              d3.select("#tooltip").style("visibility", "hidden");
+          }
+            
+            function showTooltip(info, object) {
+                d3.select("#tooltip")
+                    .style("top", info.center.y + 3 + "px")
+                    .style("left", info.center.x + "px")
+                    .style("visibility", "visible")
+                    .style("pointer-events", "none")
+                    .html(`<img src="bike.png" class='icon'/>
+                        <p class='title'> ${object.extra.online ? "Online" : "Offline"}</p>
+                        <p class='item-a'> Free Bikes: ${object.free_bikes}</p>
+                        <p class='item-b'> Empty Slots: ${object.empty_slots}</p>
+                        <div id='item-c'></div>`);
+                chart(object);
+            }
+
+            function chart(dataset) {
+                var myChartEchart = echarts.init(document.getElementById("item-c"));
+                var option = {
+                    title: {
+                        text:dataset.name,
+                        textStyle: {
+                            color: "blue",
+                            fontSize: '0.8em',
+                            fontWeight: "bold"
+                        },
+                    },
+                    
+                    xAxis: {
+                        type: "category",
+                        data:['Ebikes', 'Ebikes with childseat', 'Ebikes without childseat', 'Normal bikes'],
+                        axisLabel: {
+                            interval: 0,
+                            rotate: 30,
+                            fontSize: 10
+                        }
+                    },
+                    
+                    yAxis: {
+                        type: "value",
+                        min:0,
+                        max: dataset.free_bikes >0?dataset.free_bikes:1, // change this value
+                        nameLocation: "center",
+                        nameTextStyle: {
+                            align: "center"},
+                    },
+                    series: [
+                        {
+                            type: 'bar',
+                            data: [
+                                {value: dataset.extra.ebikes,
+                                 itemStyle: {color:'rgb('+colorScaleFunction(dataset.free_bikes)+')'} // change colour
+                                },
+                                
+                                {value: dataset.extra.ebikes_with_childseat,
+                                 itemStyle: {color:'rgb('+colorScaleFunction(dataset.free_bikes)+')'}
+                                },
+                                
+                                {value: dataset.extra.ebikes_without_childseat,
+                                 itemStyle: {color:'rgb('+colorScaleFunction(dataset.free_bikes)+')'}
+                                },
+                                
+                                {value: dataset.extra.normal_bikes,
+                                 itemStyle: {color:'rgb('+colorScaleFunction(dataset.free_bikes)+')'}
+                                }
+                            ]
+                        }
+                    ]
+                }
+                myChartEchart.setOption(option);
+            }
+            
+            
+        </script>
+    </body>
+
+</html>
+
+            
